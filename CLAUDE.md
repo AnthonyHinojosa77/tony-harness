@@ -1,52 +1,60 @@
 # AGENTS.md — Contributor Guidelines for Coding Agents
 
-You are an expert software engineer collaborating with human maintainers on this project. Read this document before inspecting files or proposing modifications.
+You are an expert software engineer collaborating with human maintainers on **tony-harness**. Read this document before inspecting files or proposing modifications.
+
+> **Maintainer Context:** The primary maintainer is a non-coder directing high-level product intent. Your implementations must be rock-solid, enterprise-grade, self-healing, and fully tested. Never introduce manual maintenance burdens or fragile hacks.
 
 ---
 
 ## 1. Ground Rules & Tone
 
-- **Default to Simplicity:** Choose the simplest working model. Do not introduce speculative architecture, excessive wrappers, or unused abstractions (YAGNI).
-- **Questions Are Read-Only:** If a prompt asks a question, requests an explanation, or seeks an architectural opinion, perform only read-only analysis. Do not modify files or execute destructive actions without explicit user authorization.
-- **Escape Hatch:** User prompts always take precedence over the defaults in this document. If a conflict arises between repo conventions and the user's explicit instructions, honor the user's direction.
+- **Enterprise Reliability First:** tony-harness must run as cleanly and stably as enterprise software. Guard every boundary with input validation, graceful error recovery, and clear UI notifications.
+- **Default to Simplicity (YAGNI):** Choose the simplest robust model. Avoid premature abstraction layers, bloated indirection, or unneeded third-party libraries.
+- **Questions Are Read-Only:** When asked for architectural analysis, explanations, or recommendations, perform read-only inspection. Do not modify files or trigger destructive actions without explicit user authorization.
+- **User Intent Precedence:** The user's explicit instructions always override repo defaults.
 
 ---
 
 ## 2. Domain Glossary
 
-To prevent misunderstandings during edits and reviews, these terms carry exact meanings:
-
-- **You:** The AI agent reading this document and executing tools.
-- **Maintainers / Us:** The core repository owners directing the task.
-- **User:** The end-user interacting with the final deployed application.
-- **Surface:** Any distinct interface through which the product is accessed (e.g., Web, Desktop, Mobile, CLI).
-- **Contracts:** The shared validation layer (schemas, API types) governing communication between adapters and backend services.
+- **You:** The AI agent reading this document and executing code.
+- **Maintainer / Tony:** The product owner directing requirements from plain English.
+- **Harness:** The `tony-harness` application, core runtime, and model orchestration system.
+- **Workspace:** The unified session canvas where conversations, agent runs, and tool outputs occur.
+- **Multi-Model Engine:** The routing and coordination layer that runs models in parallel, individually, or in sequential pipelines.
+- **Sandbox:** The isolated container execution environment where agent code, builds, and scripts run safely.
+- **Contracts:** The shared TypeScript validation schemas and event types governing client-server-model communication.
 
 ---
 
 ## 3. Product Invariants (Non-Negotiables)
 
-Changes that compromise these criteria will be rejected:
+Changes violating these rules will be rejected:
 
-1. **Strict Type Safety:** Never use `any` unless working around an unfixable external vendor bug; prefer inferred types over noisy annotations.
-2. **Performance First:** Guard against continuous re-renders, unnecessary websocket payload bloat, and unbounded background polls.
-3. **Deterministic State:** Any feature that toggles a state must provide an exact, testable teardown or inverse path (e.g., `enable` ↔ `disable`, `freeze` ↔ `unfreeze`).
+1. **Strict Type Safety:** Zero usage of `any` or unvalidated type assertions. Every API payload, event, and model response must validate through schema contracts (`zod` or similar).
+2. **Mobile & Desktop Parity:** Every UI feature in `apps/web` must be responsive and fully functional on touchscreens and narrow mobile viewports, not just widescreen desktop monitors.
+3. **Container Sandboxing:** Agent code execution, terminal shell commands, and untrusted scripts must run inside the container sandbox with rollback checkpoints—never directly on the host machine.
+4. **Deterministic State & Teardown:** Every state toggle or background process must have an exact, testable teardown path (e.g. `startSandbox()` ↔ `destroySandbox()`, `connectStream()` ↔ `disconnectStream()`).
+5. **Full Audit Logging:** All model prompts, raw responses, tool inputs, outputs, and rollback snapshots must be appended to the session audit trail.
 
 ---
 
 ## 4. "Hit Every Surface" Checklist
 
-Dense projects fail when a feature works on the tested path but is neglected everywhere else. Before marking any feature complete, verify which surfaces apply:
+Before marking any feature complete, verify across all layers:
 
-- [ ] **Data / Contracts:** Shared types or schemas updated in the shared package.
-- [ ] **Entry Points:** Config settings, keyboard shortcuts, or command palette entries wired up.
-- [ ] **Adapters:** Handled across every active runtime/provider adapter (or explicitly stubbed with unsupported errors).
-- [ ] **Documentation:** Internal runbooks updated in `docs/maintainer/` without leaking implementation details to `docs/user/`.
+- [ ] **Contracts:** Types and schemas defined in `packages/contracts`.
+- [ ] **Core Engine:** Orchestration logic and state handlers updated in `packages/core`.
+- [ ] **Adapters:** Model provider updates implemented across Gemini, Claude, and OpenAI adapters in `packages/adapters`.
+- [ ] **Sandbox:** Container security boundaries, timeout caps, and rollback hooks verified in `packages/sandbox`.
+- [ ] **UI Surfaces:** Tested on both desktop layout and mobile responsive view in `apps/web`.
+- [ ] **Documentation:** Internal maintainer specs updated in `docs/maintainer/` without exposing raw internals to user documentation.
 
 ---
 
-## 5. Ways to Hurt Yourself (Known Traps)
+## 5. Development Traps & Failure Mitigations
 
-- **Dev Server Collisions:** Always verify if a local server is already running before spawning a new one. Store and track process IDs (PIDs) so instances can be killed cleanly without terminating the user's harness.
-- **Test Scope:** Run targeted verification first (`typecheck`, `lint`, and single-file unit tests). Do not trigger repo-wide end-to-end suites on simple mechanical changes unless instructed.
-- **Draft PRs:** Never open draft PRs unless explicitly instructed; review bots and CI runs do not trigger predictably on drafts.
+- **Process Leaks:** Track all spawned processes and container instances with explicit IDs. Ensure process cleanup occurs on server shutdown or reload.
+- **Model Payload Bloat:** Do not stream massive raw binary outputs over WebSockets. Truncate or paginate large outputs and store raw artifacts in persistent sandbox storage.
+- **Targeted Verification First:** Always verify changes locally with targeted checks (`pnpm typecheck`, `pnpm lint`, targeted unit tests) before triggering broad end-to-end suites.
+- **Draft PRs:** Do not open draft PRs unless explicitly instructed.

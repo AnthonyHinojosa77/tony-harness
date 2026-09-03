@@ -1,14 +1,14 @@
 ---
-description: Use when the user asks for a plan, spec, writeup, mockups, findings, summary, or an HTML report outside the terminal.
+description: Use when the user asks for a visual plan, comparison matrix, architectural proposal, or HTML report.
 ---
 
 # HTML Communication & Spec Artifacts
 
 ## Guidelines
 
-- Produce a single, self-contained HTML file containing styles inline or via CDN (e.g., Tailwind).
-- Structure the content as a technical decision document or comparison matrix, not a marketing landing page.
-- When presenting alternative UI layouts or architectural proposals:
-  - Label variants clearly (**Option A**, **Option B**, **Option C**).
-  - Arrange options side-by-side or in structured sections for direct comparison.
-  - Output the local file path or upload artifact URL directly to the terminal so the user can inspect it in a browser without leaving the session.
+- Produce a single, self-contained HTML file containing styles inline or via CDN (e.g., Tailwind CSS).
+- Structure the content as a crisp technical decision document, architecture spec, or comparison matrix.
+- When presenting multi-model comparison results or layout alternatives:
+  - Label models and options clearly (**Model A / Gemini**, **Model B / Claude**, **Option 1**, **Option 2**).
+  - Arrange options in responsive side-by-side grids or comparison tables that look great on both desktop and mobile screens.
+- Output the artifact path or open it directly so Tony can review it visually in the browser.
