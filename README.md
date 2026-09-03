@@ -5,6 +5,12 @@
 
 ---
 
+## Status (2026-09-03)
+
+This repository currently holds the operating instructions, skills, installer, and provenance records described in section 3. No application code exists yet. Sections 2 and 4 describe the first build attempt and are kept as context for the next planning round; they are not a locked specification.
+
+---
+
 ## 1. Project Motivation: The "Empirical Substrate"
 
 Commercial AI coding tools like **Codex** and **Claude Code** are designed as generic, one-size-fits-all platforms for broad consumer audiences. As a consequence, they inject massive vendor system prompts, silent moderation rewrites, and soft guardrails that cause models to drift, ignore negative constraints, and falsely claim tasks are complete.

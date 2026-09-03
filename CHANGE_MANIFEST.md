@@ -18,7 +18,7 @@ The 11 supplied originals also remain unchanged in `/Users/owner/Library/CloudSt
 | Area | Files | Purpose |
 | --- | ---: | --- |
 | `skills/` | 47 | Fifteen entrypoints, Codex metadata, and the Claude Skill Creator's referenced resources. |
-| `sources/supplied-skills/` | 11 | Unchanged copies of every supplied `.md` and `.skill` source. |
+| `sources/supplied-skills/` | 9 | Unchanged copies of every supplied `.md` source. The two `.skill` archives were removed from the GitHub copy on 2026-09-03 (see `VALIDATION.md`); the OneDrive package still holds them. |
 | `backups/` | 4 | Prior global instructions and the superseded ADHD installation. |
 | `templates/` | 5 | Project orientation, agent instructions, architecture, and handoff templates. |
 | `history/` | 3 | Computer History synthesis, source register, and evidence boundary. |
