@@ -1,0 +1,7 @@
+interface:
+  display_name: "i-have-adhd"
+  short_description: "Make responses easier to start and follow"
+  default_prompt: "Use $i-have-adhd to make this response actionable and easy to follow."
+
+policy:
+  allow_implicit_invocation: false

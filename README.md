@@ -1,86 +1,62 @@
-# tony-harness
+# Anthony's Global AI Agent System
 
-> An enterprise-grade, multi-model AI workspace designed for desktop and mobile.
+This private toolkit gives Anthony one durable operating agreement for AI agents, plus native copies for the tools that can load local instruction and skill files. It was derived from Computer History evidence gathered on this MacBook and from the active Codex and Claude Code instruction files.
 
-**tony-harness** is a personal AI orchestration system that runs multiple leading foundation models (Gemini, Claude, GPT, DeepSeek) in parallel or individually within a single, unified workspace. Designed for seamless use from desktop browsers and mobile devices, it pairs high-level natural language control with an autonomous containerized sandbox—allowing agents to write, test, and execute software safely with full audit logs and rollback capability.
+## What is installed
 
----
+| Surface | Global instructions | On-demand skills | Verification |
+| --- | --- | --- | --- |
+| Codex | `~/.codex/AGENTS.md` | `~/.agents/skills/<name>/` | Fresh session must report loaded instructions and discover each skill. |
+| Claude Code | `~/.claude/CLAUDE.md` | `~/.claude/skills/<name>/` | Fresh session: `/memory`, `/skills`, then invoke one harmless skill. |
+| Cursor, ZCode, T3 Code | Use the project template in the project itself. | Materialize only skills that the exact runtime supports. | Check inside that runtime; another app's status is not evidence. |
+| ChatGPT, Claude web/desktop, Grok, Gemini, Kimi | Use that product's supported custom instructions, project files, or a handoff capsule. | Use native skills only where they are actually exposed. | Start a fresh chat and test the exact behavior. |
 
-## Key Features
+Local files do not automatically become available to browser or cloud assistants. The canonical files here preserve intent; the install location, discovery mechanism, and fresh invocation establish whether a specific runtime can use them.
 
-- **Universal Multi-Model Orchestration:** Run models simultaneously in parallel (side-by-side / consensus), individually with smart auto-routing, or as a collaborative multi-agent pipeline.
-- **Enterprise Reliability on Desktop & Mobile:** A responsive, mobile-first Web App / PWA interface backed by an event-driven server runtime.
-- **Autonomous Container Sandbox:** Agents execute code, shell commands, and builds inside an isolated container environment without manual interruptions, backed by automated rollback checkpoints.
-- **Zero-Code Operation:** Built specifically for non-coder maintainers—no terminal wrestling needed for daily operations.
-- **Comprehensive Audit Trail:** Full audit logs of every prompt, model response, tool execution, and state transition.
+## Files
 
----
+- `AGENTS.md` is the shared source for agent behavior.
+- `CLAUDE.md` adds the few Claude-specific rules that are already established.
+- `templates/` contains project files to tailor after an agent has inspected a real project.
+- `skills/` contains 15 reusable workflows. Explicit-only skills retain manual activation, while the others preserve their supplied automatic behavior.
+- `sources/supplied-skills/` preserves all 11 files Anthony supplied, unchanged, before cross-runtime adaptation.
+- `CLOUD_LOCATIONS.md` records the OneDrive source and Google Drive mirror.
+- `history/AI_WORKFLOW_REVIEW_2026-09-02.md` explains the evidence and why each rule exists.
+- `scripts/manage.py` installs, verifies, and reports drift without touching unrelated files.
 
-## Architecture at a Glance
+## Manage the installation
 
-The project is structured as a clean TypeScript monorepo using `pnpm` workspaces:
+Preview changes:
 
-```text
-tony-harness/
-├── apps/
-│   ├── web/               # Responsive Web App & PWA (Desktop & Mobile interface)
-│   └── server/            # Central orchestration API & session manager
-├── packages/
-│   ├── core/              # Multi-model routing, agent orchestration & session state
-│   ├── adapters/          # Model providers (Gemini, Claude, OpenAI) & external APIs
-│   ├── sandbox/           # Containerized execution environment & rollback engine
-│   └── contracts/         # Shared schemas, WebSocket/SSE event types & contracts
-├── docs/
-│   └── maintainer/        # Internal architecture specs & contributor playbooks
-└── skills/                # Agent operational skills & workflow runbooks
-```
-
----
-
-## Quick Start
-
-### Prerequisites
-- Node.js `>= 20.0.0`
-- `pnpm` (`npm install -g pnpm`)
-- Docker (for autonomous container execution)
-
-### Installation
 ```bash
-# 1. Clone the repository
-git clone https://github.com/AnthonyHinojosa77/tony-harness.git
-cd tony-harness
-
-# 2. Install dependencies
-pnpm install
-
-# 3. Configure environment variables
-cp .env.example .env
-# Add your API keys: GEMINI_API_KEY, ANTHROPIC_API_KEY, OPENAI_API_KEY
-
-# 4. Start the workspace
-pnpm dev
+python3 scripts/manage.py install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser or navigate to your local network IP on mobile to access the workspace.
+Apply the managed global files:
 
----
+```bash
+python3 scripts/manage.py install --apply
+```
 
-## Documentation
+Verify byte-for-byte installation and skill metadata:
 
-- **Contributor Playbook:** [`AGENTS.md`](./AGENTS.md)
-- **Architecture & Contract Boundaries:** [`docs/maintainer/ARCHITECTURE.md`](./docs/maintainer/ARCHITECTURE.md)
-- **Modular Agent Skills:** [`skills/`](./skills/)
+```bash
+python3 scripts/manage.py verify
+```
 
----
+The installer backs up an existing managed instruction file before replacing it. It copies only the named files and skill folders in this toolkit. It does not change credentials, permissions, MCP configuration, environment variables, observation settings, or unrelated skills.
 
-## Roadmap
+The supplied Claude workflow named `skill-creator` is installed as `claude-skill-creator`. Codex already ships a built-in `skill-creator`; the distinct name keeps both workflows directly selectable.
 
-- [x] Phase 1: Responsive Web App & PWA with central Node.js engine and container sandbox.
-- [ ] Phase 2: Cloud-hosted deployment with multi-device authentication and cloud persistence.
-- [ ] Phase 3: Packaged native desktop (Tauri/Electron) and mobile application wrappers.
+## Use in a new project
 
----
+An agent should inspect the actual project before creating project instructions. After that inspection, copy and tailor `templates/README.md`, `templates/AGENTS.md`, and `templates/CLAUDE.md`. Replace every bracketed prompt with verified project facts; remove sections that do not apply. Project guidance should hold architecture, commands, business rules, and acceptance criteria. Personal working preferences stay in the global file.
 
-## License
+The reusable handoff and completion records live in `templates/docs/maintainer/`. They solve the recurring losses seen when work changes apps, resumes after an interruption, or depends on a cloud-synced file.
 
-[MIT](./LICENSE)
+## Authoritative format references
+
+- [Codex global `AGENTS.md` guidance](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+- [Codex user skill locations](https://learn.chatgpt.com/docs/build-skills)
+- [Claude Code instruction scopes and `AGENTS.md` imports](https://code.claude.com/docs/en/memory)
+- [Claude Code manual-only skill configuration](https://code.claude.com/docs/en/skills)

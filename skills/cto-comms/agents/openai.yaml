@@ -1,0 +1,6 @@
+interface:
+  display_name: "CTO Comms"
+  short_description: "Evidence-bound CTO-to-CEO communication"
+  default_prompt: "Use $cto-comms to give Anthony a concise, evidence-bound operating answer."
+policy:
+  allow_implicit_invocation: true

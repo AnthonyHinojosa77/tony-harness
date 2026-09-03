@@ -1,0 +1,7 @@
+interface:
+  display_name: "File Pull Request"
+  short_description: "File a focused, review-ready pull request"
+  default_prompt: "Use $file-pr to file a review-ready pull request for the completed work."
+policy:
+  allow_implicit_invocation: false
+

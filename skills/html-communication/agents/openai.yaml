@@ -1,0 +1,7 @@
+interface:
+  display_name: "HTML Communication"
+  short_description: "Build an inspectable HTML decision artifact"
+  default_prompt: "Use $html-communication to turn these findings into a self-contained HTML report."
+policy:
+  allow_implicit_invocation: false
+

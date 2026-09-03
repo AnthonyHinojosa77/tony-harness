@@ -1,0 +1,6 @@
+interface:
+  display_name: "Learning Loop"
+  short_description: "Record durable lessons from the current session"
+  default_prompt: "Use $learning-loop for the requested task."
+policy:
+  allow_implicit_invocation: true

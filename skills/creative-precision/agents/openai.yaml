@@ -1,0 +1,6 @@
+interface:
+  display_name: "Creative Precision"
+  short_description: "Choose one strong creative direction"
+  default_prompt: "Use $creative-precision to choose and defend one tasteful creative direction."
+policy:
+  allow_implicit_invocation: true

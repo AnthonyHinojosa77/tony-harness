@@ -1,0 +1,6 @@
+interface:
+  display_name: "Grill Me"
+  short_description: "Interview Anthony and produce a clear spec"
+  default_prompt: "Use $grill-me to interview me, expose gaps, and produce a written spec."
+policy:
+  allow_implicit_invocation: true

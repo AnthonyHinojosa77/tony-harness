@@ -1,0 +1,7 @@
+interface:
+  display_name: "Babysit Pull Request"
+  short_description: "Watch one authorized PR through review"
+  default_prompt: "Use $babysit-pr to watch this pull request through CI and review."
+policy:
+  allow_implicit_invocation: false
+

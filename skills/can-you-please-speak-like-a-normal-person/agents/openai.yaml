@@ -1,0 +1,6 @@
+interface:
+  display_name: "Speak Like a Normal Person"
+  short_description: "Choose brief, work, or explain mode"
+  default_prompt: "Use $can-you-please-speak-like-a-normal-person in work mode for action-first communication."
+policy:
+  allow_implicit_invocation: false
