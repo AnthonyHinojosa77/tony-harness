@@ -1,6 +1,8 @@
 # Maintainer Architecture & Contract Boundary
 
 > **Audience Notice:** This document defines internal system layers, contract boundaries, and execution protocols for **tony-harness**. Do not reference these internal paths in end-user facing documentation.
+>
+> **Status (2026-09-03):** Planned architecture from the first build attempt. None of the packages below exist in this repository yet. Revise this document when the Phase 1 specification is settled.
 
 ---
 
@@ -65,4 +67,4 @@ When introducing a new model provider (e.g. DeepSeek, Mistral, Ollama):
 2. Implement the `ModelProviderAdapter` interface in `packages/adapters/<provider-name>`.
 3. Wire the adapter into the `ModelRegistry` in `packages/core`.
 4. Ensure streaming, tool-calling, and error fallback states pass integration tests.
-5. Complete the *"Hit Every Surface"* checklist in `AGENTS.md`.
+5. Follow the "Execute to a verified result" steps in `AGENTS.md`: update every producer, consumer, and entry point the change touches, run the project-native gates, and verify the end-user result.
