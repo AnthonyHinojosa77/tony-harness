@@ -39,6 +39,8 @@ export default async function ChatPage({ params }: PageProps<"/chats/[id]">) {
         initialModelId={initialModelId}
         models={models}
         isNew={!conversation}
+        voice={settings.voice}
+        speechifyAvailable={Boolean(process.env.SPEECHIFY_API_KEY)}
       />
     </AppShell>
   );

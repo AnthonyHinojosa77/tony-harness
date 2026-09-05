@@ -27,8 +27,8 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` built and verified by Cl
 - [~] 1.5 Chat through OpenRouter. Send a message, choose a model from favorites, watch the answer stream in. Conversations save and appear on every device. Built and verified against a local stand-in for OpenRouter; the real connection needs Anthony's OpenRouter key.
 - [x] 1.6 Rules as system prompt. `AGENTS.md` is imported as the live rules, editable in Settings, applied to every request, and exportable back to the repository. (Export is a download for now; automatic sync to GitHub comes with the GitHub connection in 4.5.)
 - [x] 1.7 Cost tracking in Settings. Per-message cost recorded, totals by day and model, alert when the monthly limit is near.
-- [ ] 1.8 Read-aloud. Play button on every response and a hands-free toggle that reads each response automatically. Speechify voice with the device voice as fallback.
-- [ ] 1.9 Home-screen install. Works as an installed app on iPhone and Android with an icon and splash screen.
+- [~] 1.8 Read-aloud. Play button on every response and a hands-free toggle that reads each response automatically. Speechify voice with the device voice as fallback. Built and verified with the device voice; the Speechify voice switches on the moment Anthony's Speechify key is added.
+- [x] 1.9 Home-screen install. Works as an installed app on iPhone and Android with an icon and splash screen. A one-line hint shows phone visitors how to install, and an offline page appears when there is no connection.
 
 **Design check-in 1 (done 2026-09-05):** Anthony chose the "Paper stamp" direction from three rounds of options. Phone chat, laptop chat, and the park map exist as mockups in that style.
 

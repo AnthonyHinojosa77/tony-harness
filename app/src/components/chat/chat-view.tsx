@@ -7,7 +7,9 @@ import { DefaultChatTransport, type UIMessage } from "ai";
 import { IconButton } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MicIcon, PaperclipIcon, SendIcon } from "@/components/ui/icons";
+import { useReadAloud, type VoiceSource } from "@/lib/speech/use-read-aloud";
 import { ModelPicker } from "./model-picker";
+import { HandsFreeToggle, ListenButton } from "./read-aloud-controls";
 
 type Props = {
   conversationId: string;
@@ -15,20 +17,38 @@ type Props = {
   initialModelId: string;
   models: { id: string; name: string }[];
   isNew: boolean;
+  voice: VoiceSource;
+  speechifyAvailable: boolean;
 };
 
-export function ChatView({ conversationId, initialMessages, initialModelId, models, isNew }: Props) {
+export function ChatView({
+  conversationId,
+  initialMessages,
+  initialModelId,
+  models,
+  isNew,
+  voice,
+  speechifyAvailable,
+}: Props) {
   const router = useRouter();
   const [modelId, setModelId] = useState(initialModelId);
   const [input, setInput] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
   const startedNew = useRef(false);
+  const reader = useReadAloud({ voice, speechifyAvailable });
+  const handsFreeRef = useRef(reader.handsFree);
+  useEffect(() => {
+    handsFreeRef.current = reader.handsFree;
+  }, [reader.handsFree]);
 
   const { messages, sendMessage, status, stop, error } = useChat({
     id: conversationId,
     messages: initialMessages,
     transport: new DefaultChatTransport({ api: "/api/chat" }),
-    onFinish: () => {
+    onFinish: ({ message }) => {
+      if (handsFreeRef.current && message.role === "assistant") {
+        void reader.play(message.id, textOfParts(message.parts));
+      }
       // A brand-new thread now exists on the server; refresh so the list shows it.
       if (isNew && !startedNew.current) {
         startedNew.current = true;
@@ -57,6 +77,7 @@ export function ChatView({ conversationId, initialMessages, initialModelId, mode
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex items-center justify-between px-5 pb-2 md:pt-6">
         <ModelPicker value={modelId} options={models} onChange={setModelId} disabled={busy} />
+        <HandsFreeToggle on={reader.handsFree} onChange={reader.setHandsFree} />
       </div>
 
       <div ref={listRef} className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-3">
@@ -69,7 +90,15 @@ export function ChatView({ conversationId, initialMessages, initialModelId, mode
           </div>
         )}
         {messages.map((m) => (
-          <MessageBubble key={m.id} message={m} modelName={modelName} />
+          <MessageBubble
+            key={m.id}
+            message={m}
+            modelName={modelName}
+            playing={reader.playingId === m.id}
+            onListen={() =>
+              reader.playingId === m.id ? reader.stop() : reader.play(m.id, textOfParts(m.parts))
+            }
+          />
         ))}
         {status === "submitted" && (
           <p className="font-serif text-sm italic text-muted">{modelName(modelId)} is thinking</p>
@@ -117,17 +146,25 @@ export function ChatView({ conversationId, initialMessages, initialModelId, mode
   );
 }
 
-function MessageBubble({
-  message,
-  modelName,
-}: {
-  message: UIMessage;
-  modelName: (id: string) => string;
-}) {
-  const text = message.parts
+function textOfParts(parts: UIMessage["parts"]) {
+  return parts
     .filter((p) => p.type === "text")
     .map((p) => (p as { text: string }).text)
     .join("");
+}
+
+function MessageBubble({
+  message,
+  modelName,
+  playing,
+  onListen,
+}: {
+  message: UIMessage;
+  modelName: (id: string) => string;
+  playing: boolean;
+  onListen: () => void;
+}) {
+  const text = textOfParts(message.parts);
   if (message.role === "user") {
     return (
       <div className="flex justify-end">
@@ -143,8 +180,13 @@ function MessageBubble({
       {meta?.modelId && (
         <span className="px-1 text-[11px] font-extrabold text-grass-deep">{modelName(meta.modelId)}</span>
       )}
-      <Card variant="stamp" className="max-w-[92%] whitespace-pre-wrap px-4 py-3.5 text-[15px] font-semibold leading-relaxed md:max-w-[80%]">
-        {text || <span className="text-muted">…</span>}
+      <Card variant="stamp" className="flex max-w-[92%] flex-col gap-3 px-4 py-3.5 text-[15px] font-semibold leading-relaxed md:max-w-[80%]">
+        <div className="whitespace-pre-wrap">{text || <span className="text-muted">…</span>}</div>
+        {text && (
+          <div>
+            <ListenButton playing={playing} onClick={onListen} />
+          </div>
+        )}
       </Card>
     </div>
   );
