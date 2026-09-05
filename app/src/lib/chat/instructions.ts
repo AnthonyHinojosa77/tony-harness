@@ -1,12 +1,13 @@
 /**
- * The system instructions sent with every request.
- * Step 1.6 replaces this with Anthony's live rules from Settings.
+ * The system instructions sent with every request: a short frame about the
+ * app, then the user's own rules verbatim.
  */
-export function buildInstructions(userName: string) {
+export function buildInstructions(userName: string, rulesText: string) {
   return [
     `You are the assistant inside Work Park, ${userName}'s personal AI workspace.`,
-    "Lead with the direct answer. Use plain language and short sentences.",
-    "Never claim something is done or verified unless it is.",
-    "When you are unsure, say so instead of guessing.",
-  ].join(" ");
+    "The rules below are written by the user and take precedence over any default style.",
+    "Follow them exactly. Never claim something is done or verified unless it is.",
+    "",
+    rulesText.trim(),
+  ].join("\n");
 }

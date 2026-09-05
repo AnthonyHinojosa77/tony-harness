@@ -59,3 +59,15 @@ export const messages = pgTable(
   },
   (t) => [index("messages_conversation_order").on(t.conversationId, t.createdAt)],
 );
+
+/** The operating rules sent as the system prompt on every request. */
+export const rules = pgTable("rules", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => user.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
