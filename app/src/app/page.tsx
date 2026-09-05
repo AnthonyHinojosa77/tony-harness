@@ -1,12 +1,6 @@
-import { Wordmark } from "@/components/wordmark";
+import { redirect } from "next/navigation";
+import { getSession } from "@/lib/session";
 
-export default function Home() {
-  return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-6 px-6 py-16">
-      <Wordmark size="lg" />
-      <p className="font-serif italic text-xl text-muted">
-        Your park is being planted.
-      </p>
-    </main>
-  );
+export default async function Home() {
+  redirect((await getSession()) ? "/chats" : "/sign-in");
 }
