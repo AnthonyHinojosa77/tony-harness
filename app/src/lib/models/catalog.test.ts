@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatPerMillion, normalizeCatalog } from "./catalog";
+import { formatPerMillion, normalizeCatalog, shortlist } from "./catalog";
 
 const raw = {
   data: [
@@ -10,6 +10,7 @@ const raw = {
       pricing: { prompt: "0.000003", completion: "0.000015" },
       architecture: { input_modalities: ["text", "image"], output_modalities: ["text"] },
       supported_parameters: ["tools", "reasoning"],
+      created: 1700000000,
     },
     {
       id: "anthropic/claude-sonnet-5:batch",
@@ -55,5 +56,28 @@ describe("formatPerMillion", () => {
     expect(formatPerMillion(3)).toBe("$3 / M");
     expect(formatPerMillion(0.15)).toBe("$0.15 / M");
     expect(formatPerMillion(12.5)).toBe("$12.50 / M");
+  });
+});
+
+describe("shortlist", () => {
+  const mk = (id: string, provider: string, created: number, price = 1) => ({
+    id, name: id, provider, contextLength: 0, promptPerMillion: price, completionPerMillion: price,
+    inputs: ["text"], supportsTools: true, supportsReasoning: false, created,
+  });
+  const catalog = [
+    mk("anthropic/old", "Anthropic", 1),
+    mk("anthropic/new", "Anthropic", 3),
+    mk("anthropic/mid", "Anthropic", 2),
+    mk("openai/free", "OpenAI", 9, 0),
+    mk("openai/paid", "OpenAI", 5),
+    mk("acme/x", "Acme", 9),
+  ];
+
+  it("puts favorites first, then the newest paid models per major lab", () => {
+    expect(shortlist(catalog, ["anthropic/mid"], 1).map((m) => m.id)).toEqual([
+      "anthropic/mid",
+      "anthropic/new",
+      "openai/paid",
+    ]);
   });
 });

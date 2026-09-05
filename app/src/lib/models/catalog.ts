@@ -13,11 +13,14 @@ export type CatalogModel = {
   inputs: string[];
   supportsTools: boolean;
   supportsReasoning: boolean;
+  /** Unix seconds when OpenRouter listed it. */
+  created: number;
 };
 
 type RawModel = {
   id: string;
   name: string;
+  created?: number;
   context_length?: number;
   pricing?: { prompt?: string; completion?: string };
   architecture?: { input_modalities?: string[]; output_modalities?: string[] };
@@ -54,6 +57,7 @@ export function normalizeCatalog(raw: { data: RawModel[] }): CatalogModel[] {
         inputs: m.architecture?.input_modalities ?? ["text"],
         supportsTools: params.includes("tools"),
         supportsReasoning: params.includes("reasoning"),
+        created: m.created ?? 0,
       };
     })
     .sort((a, b) => a.provider.localeCompare(b.provider) || a.name.localeCompare(b.name));
@@ -77,4 +81,30 @@ export function formatPerMillion(value: number) {
   if (value === 0) return "free";
   const text = value >= 1 ? value.toFixed(value % 1 === 0 ? 0 : 2) : value.toFixed(2);
   return `$${text} / M`;
+}
+
+/**
+ * A short, current list for the onboarding picker: the defaults first,
+ * then the newest few models from each major lab.
+ */
+export function shortlist(
+  catalog: CatalogModel[],
+  favorites: string[],
+  perProvider = 4,
+): CatalogModel[] {
+  const majors = ["Anthropic", "OpenAI", "Google", "xAI", "DeepSeek", "Meta", "Mistral"];
+  const byId = new Map(catalog.map((m) => [m.id, m]));
+  const picked: CatalogModel[] = favorites.map((id) => byId.get(id)).filter((m): m is CatalogModel => !!m);
+  const seen = new Set(picked.map((m) => m.id));
+  for (const provider of majors) {
+    const newest = catalog
+      .filter((m) => m.provider === provider && !seen.has(m.id) && m.promptPerMillion > 0)
+      .sort((a, b) => b.created - a.created)
+      .slice(0, perProvider);
+    for (const m of newest) {
+      picked.push(m);
+      seen.add(m.id);
+    }
+  }
+  return picked;
 }

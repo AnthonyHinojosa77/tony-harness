@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { OnboardingFlow } from "@/components/onboarding/onboarding-flow";
-import { fetchCatalog } from "@/lib/models/catalog";
+import { fetchCatalog, shortlist } from "@/lib/models/catalog";
 import { requireSession } from "@/lib/session";
 import { defaultFavoriteModels, defaultSettings, getSettings } from "@/lib/settings";
 
@@ -11,17 +11,14 @@ export default async function OnboardingPage() {
   const existing = await getSettings(session.user.id);
   const catalog = await fetchCatalog().catch(() => []);
 
-  // The picker offers a short, balanced shortlist. The full catalog lives in Settings.
-  const shortlist = catalog.filter(
-    (m) =>
-      defaultFavoriteModels.includes(m.id) ||
-      ["Anthropic", "OpenAI", "Google", "xAI", "DeepSeek", "Meta", "Mistral"].includes(m.provider),
-  );
+  // The picker offers a short, current list. The full catalog lives in Settings.
+  const favorites = existing?.favoriteModels ?? defaultFavoriteModels;
+  const models = shortlist(catalog, favorites);
 
   return (
     <OnboardingFlow
       name={session.user.name}
-      models={shortlist.slice(0, 40)}
+      models={models}
       initial={{
         favoriteModels: existing?.favoriteModels ?? defaultSettings.favoriteModels,
         navigation: existing?.navigation ?? defaultSettings.navigation,
