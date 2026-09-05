@@ -1,0 +1,46 @@
+// A stand-in for OpenRouter's chat completions endpoint, for browser tests.
+// Streams a fixed reply in the OpenAI-compatible SSE format, then usage with cost.
+// Usage: node e2e/mock-openrouter.mjs [port]
+import http from "node:http";
+
+const port = Number(process.argv[2] ?? 3124);
+
+const server = http.createServer((req, res) => {
+  if (req.method !== "POST" || !req.url?.endsWith("/chat/completions")) {
+    res.writeHead(404).end();
+    return;
+  }
+  let body = "";
+  req.on("data", (c) => (body += c));
+  req.on("end", () => {
+    const parsed = JSON.parse(body);
+    const lastUser = [...parsed.messages].reverse().find((m) => m.role === "user");
+    const asked = typeof lastUser?.content === "string" ? lastUser.content : "that";
+    const words = `Hello from the mock. You asked: ${asked}`.split(" ");
+    res.writeHead(200, {
+      "content-type": "text/event-stream",
+      "cache-control": "no-cache",
+      connection: "keep-alive",
+    });
+    const id = "chatcmpl-mock";
+    let i = 0;
+    const tick = () => {
+      if (i < words.length) {
+        const delta = (i === 0 ? "" : " ") + words[i++];
+        res.write(
+          `data: ${JSON.stringify({ id, object: "chat.completion.chunk", model: parsed.model, choices: [{ index: 0, delta: { content: delta }, finish_reason: null }] })}\n\n`,
+        );
+        setTimeout(tick, 40);
+      } else {
+        res.write(
+          `data: ${JSON.stringify({ id, object: "chat.completion.chunk", model: parsed.model, choices: [{ index: 0, delta: {}, finish_reason: "stop" }], usage: { prompt_tokens: 20, completion_tokens: words.length, total_tokens: 20 + words.length, cost: 0.00031 } })}\n\n`,
+        );
+        res.write("data: [DONE]\n\n");
+        res.end();
+      }
+    };
+    tick();
+  });
+});
+
+server.listen(port, () => console.log(`mock openrouter on ${port}`));

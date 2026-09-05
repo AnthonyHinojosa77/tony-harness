@@ -1,0 +1,151 @@
+"use client";
+
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport, type UIMessage } from "ai";
+import { IconButton } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { MicIcon, PaperclipIcon, SendIcon } from "@/components/ui/icons";
+import { ModelPicker } from "./model-picker";
+
+type Props = {
+  conversationId: string;
+  initialMessages: UIMessage[];
+  initialModelId: string;
+  models: { id: string; name: string }[];
+  isNew: boolean;
+};
+
+export function ChatView({ conversationId, initialMessages, initialModelId, models, isNew }: Props) {
+  const router = useRouter();
+  const [modelId, setModelId] = useState(initialModelId);
+  const [input, setInput] = useState("");
+  const listRef = useRef<HTMLDivElement>(null);
+  const startedNew = useRef(false);
+
+  const { messages, sendMessage, status, stop, error } = useChat({
+    id: conversationId,
+    messages: initialMessages,
+    transport: new DefaultChatTransport({ api: "/api/chat" }),
+    onFinish: () => {
+      // A brand-new thread now exists on the server; refresh so the list shows it.
+      if (isNew && !startedNew.current) {
+        startedNew.current = true;
+        router.refresh();
+      }
+    },
+  });
+
+  const busy = status === "submitted" || status === "streaming";
+
+  useEffect(() => {
+    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
+  }, [messages, status]);
+
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const text = input.trim();
+    if (!text || busy) return;
+    setInput("");
+    void sendMessage({ text }, { body: { conversationId, modelId } });
+  }
+
+  const modelName = (id: string) => models.find((m) => m.id === id)?.name ?? id;
+
+  return (
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex items-center justify-between px-5 pb-2 md:pt-6">
+        <ModelPicker value={modelId} options={models} onChange={setModelId} disabled={busy} />
+      </div>
+
+      <div ref={listRef} className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-3">
+        {messages.length === 0 && (
+          <div className="flex flex-1 flex-col items-center justify-center gap-1 text-center">
+            <p className="font-serif text-2xl">What are we working on?</p>
+            <p className="text-sm font-semibold text-muted">
+              Talking to {modelName(modelId)}. Switch models any time above.
+            </p>
+          </div>
+        )}
+        {messages.map((m) => (
+          <MessageBubble key={m.id} message={m} modelName={modelName} />
+        ))}
+        {status === "submitted" && (
+          <p className="font-serif text-sm italic text-muted">{modelName(modelId)} is thinking</p>
+        )}
+        {error && (
+          <p role="alert" className="rounded-chip bg-sun px-3 py-2 text-xs font-bold">
+            {error.message}
+          </p>
+        )}
+      </div>
+
+      <form onSubmit={submit} className="px-4 pt-2 pb-3 md:px-8 md:pb-6">
+        <div className="flex items-center gap-2 rounded-pill border-2 border-ink bg-card py-1 pr-1 pl-4 shadow-[var(--shadow-stamp)] md:min-h-15 md:py-1.5 md:pr-1.5 md:pl-5">
+          <PaperclipIcon className="shrink-0 text-muted" />
+          <input
+            type="text"
+            aria-label="Message"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask anything"
+            autoComplete="off"
+            className="min-w-0 flex-1 bg-transparent font-serif text-[17px] italic text-ink outline-none placeholder:text-placeholder"
+          />
+          <IconButton label="Speak" variant="ghost" className="size-10" type="button">
+            <MicIcon className="text-muted" />
+          </IconButton>
+          {busy ? (
+            <IconButton label="Stop" variant="stamp" type="button" onClick={() => stop()}>
+              <span aria-hidden="true" className="size-3.5 rounded-sm bg-ink" />
+            </IconButton>
+          ) : (
+            <IconButton
+              label="Send"
+              variant="press"
+              type="submit"
+              className="border-2 border-ink shadow-none active:translate-y-0"
+              disabled={!input.trim()}
+            >
+              <SendIcon className="text-white" />
+            </IconButton>
+          )}
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function MessageBubble({
+  message,
+  modelName,
+}: {
+  message: UIMessage;
+  modelName: (id: string) => string;
+}) {
+  const text = message.parts
+    .filter((p) => p.type === "text")
+    .map((p) => (p as { text: string }).text)
+    .join("");
+  if (message.role === "user") {
+    return (
+      <div className="flex justify-end">
+        <div className="max-w-[85%] whitespace-pre-wrap rounded-[22px_22px_6px_22px] bg-ink px-4 py-3 text-[15px] font-semibold leading-relaxed text-paper md:max-w-[70%]">
+          {text}
+        </div>
+      </div>
+    );
+  }
+  const meta = message.metadata as { modelId?: string } | undefined;
+  return (
+    <div className="flex flex-col gap-1.5">
+      {meta?.modelId && (
+        <span className="px-1 text-[11px] font-extrabold text-grass-deep">{modelName(meta.modelId)}</span>
+      )}
+      <Card variant="stamp" className="max-w-[92%] whitespace-pre-wrap px-4 py-3.5 text-[15px] font-semibold leading-relaxed md:max-w-[80%]">
+        {text || <span className="text-muted">…</span>}
+      </Card>
+    </div>
+  );
+}
