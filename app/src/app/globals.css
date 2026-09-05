@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/*
+  Work Park design tokens: the "Paper stamp" direction.
+  Cream paper, dark green ink, grass green actions, sunny yellow accents.
+  See docs/SPEC.md, "Design direction".
+*/
+:root {
+  --paper: #f6f1e6;
+  --card: #fffdf8;
+  --ink: #22332a;
+  --ink-soft: #4b5550;
+  --muted: #7a7362;
+  --placeholder: #9a927f;
+  --tan: #e3d9c4;
+  --tan-deep: #d9cbaa;
+  --grass: #58c26a;
+  --grass-deep: #3e9e50;
+  --grass-light: #ddf3e2;
+  --lawn: #cfe7d6;
+  --lawn-edge: #8fc9a4;
+  --sun: #ffe27a;
+  --sun-ink: #6b4e00;
+  --pond: #d7e9f2;
+  --pond-edge: #9dc3d8;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-placeholder: var(--placeholder);
+  --color-tan: var(--tan);
+  --color-tan-deep: var(--tan-deep);
+  --color-grass: var(--grass);
+  --color-grass-deep: var(--grass-deep);
+  --color-grass-light: var(--grass-light);
+  --color-lawn: var(--lawn);
+  --color-lawn-edge: var(--lawn-edge);
+  --color-sun: var(--sun);
+  --color-sun-ink: var(--sun-ink);
+  --color-pond: var(--pond);
+  --color-pond-edge: var(--pond-edge);
+
+  --font-sans: var(--font-nunito), "Segoe UI", system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+
+  --radius-pill: 999px;
+  --radius-card: 22px;
+  --radius-chip: 14px;
+
+  /* Ink emphasis: outline plus a solid offset shadow. Used sparingly. */
+  --shadow-stamp: 4px 4px 0 var(--ink);
+  --shadow-stamp-sm: 3px 3px 0 var(--ink);
+  /* Pressed buttons: a darker bottom edge. */
+  --shadow-press: 0 4px 0 var(--grass-deep);
+  --shadow-press-tan: 0 3px 0 var(--tan);
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
