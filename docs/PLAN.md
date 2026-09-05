@@ -4,7 +4,11 @@ The shared plan for building the app described in [SPEC.md](./SPEC.md). Anthony 
 
 **Goal:** A personal AI workspace on Anthony's phones and laptop that replaces his daily use of the Claude and ChatGPT apps and of coding agents, with every model available through one app and every model following his rules.
 
-**How to read this:** Each milestone ends with something Anthony can open on his phone and try. Each step inside a milestone is one pull request. A step is checked only after its pull request is merged and the preview behaved as described.
+**Who does what:** Claude builds everything: code, design, hosting, testing, and fixes. Anthony's only job is to use the app the way any user would and say what is wrong. He never installs tools, runs commands, or reads code.
+
+**How each step gets accepted:** Each step inside a milestone is one pull request. When it is ready, Claude sends a message with a link to a live preview of the app and a short "what to try" list, for example: "Open this link on your phone, sign in with Google, send the message 'hello' to any model, confirm a reply streams in." Anthony opens the link, does those things, and replies with either "works" or a plain description of what looked or behaved wrong. Claude fixes it and sends a new link. When Anthony says "works," Claude merges the pull request and ticks the box.
+
+**How a milestone gets accepted:** Each milestone ends with a checkpoint. A checkpoint is Anthony using the finished milestone for real, on his own tasks, for as long as he likes, then telling Claude what is missing or annoying before the next milestone starts. It is the same as trying a new app for a few days and giving feedback.
 
 Status key: `[ ]` not started, `[~]` in progress, `[x]` done.
 
@@ -24,7 +28,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` done.
 - [ ] 1.8 Read-aloud. Play button on every response and a hands-free toggle that reads each response automatically. Speechify voice with the device voice as fallback.
 - [ ] 1.9 Home-screen install. Works as an installed app on iPhone and Android with an icon and splash screen.
 
-**Checkpoint:** Anthony uses it as his main chat app for a few days and lists what is missing or annoying.
+**Checkpoint:** Anthony makes the installed app his main chat app for a few days. He then tells Claude, in plain words, what was missing or annoying compared with the Claude and ChatGPT apps.
 
 ---
 
@@ -39,7 +43,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` done.
 - [ ] 2.5 Research. One lead model with up to two supporting lanes, producing a cited answer.
 - [ ] 2.6 Full model catalog in Settings. Search every OpenRouter model with prices, star any to add it to favorites.
 
-**Checkpoint:** Anthony runs one real research question and one real comparison and judges whether the output beats his current tools.
+**Checkpoint:** Anthony asks one real research question and one real comparison question, the same way he would in any chat app, and tells Claude whether the answers were as good as or better than what he gets today.
 
 ---
 
@@ -52,7 +56,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` done.
 - [ ] 3.3 Memory with confirmation. The model proposes a memory in plain text, Anthony confirms or adjusts, then it saves. A "remembered" note appears on the response.
 - [ ] 3.4 Memory management. Every saved memory listed in Settings, editable and deletable.
 
-**Checkpoint:** Anthony organizes his existing work into projects and confirms memories behave as expected.
+**Checkpoint:** Anthony sorts some existing conversations into projects, lets the app propose a few memories, and tells Claude whether the confirm-before-save flow felt right.
 
 ---
 
@@ -66,7 +70,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` done.
 - [ ] 4.4 Developer portal. Task list, live progress, change review, and approve or reject, all usable on the phone. Code editor on the laptop.
 - [ ] 4.5 GitHub connection. Optional GitHub App install per project. The agent can open pull requests or push directly when permitted.
 
-**Checkpoint:** Anthony gives it a real coding task and reviews the result from his phone.
+**Checkpoint:** Anthony describes a real coding task in plain words, waits for the app to finish, reads the summary on his phone, and taps approve or reject. He tells Claude whether he understood what happened without reading code.
 
 ---
 
@@ -78,7 +82,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` done.
 - [ ] 5.2 Saved plans. Name a multi-step sequence once, reuse it with new inputs.
 - [ ] 5.3 Skills in chat. Slash commands from the repository's skills folder plus automatic skills, each labeled in chat, managed in Settings.
 
-**Checkpoint:** Anthony saves one plan he expects to reuse weekly.
+**Checkpoint:** Anthony creates one saved plan he expects to reuse weekly and runs it twice. He tells Claude whether setting it up was obvious.
 
 ---
 
@@ -90,7 +94,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` done.
 - [ ] 6.2 OneDrive. Same rules as Google Drive.
 - [ ] 6.3 Visual network view. Projects, conversations, and files as a connected map, chosen as primary navigation in onboarding or opened as a secondary view.
 
-**Checkpoint:** Anthony decides whether the app has replaced his current AI tools.
+**Checkpoint:** Anthony connects his drives, opens the network view, and decides whether the app has replaced his current AI tools.
 
 ---
 
