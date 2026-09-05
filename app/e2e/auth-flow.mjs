@@ -48,7 +48,7 @@ await page.getByRole("button", { name: "$50" }).click();
 await page.screenshot({ path: `${dir}/onboarding-4-spending.png` });
 await page.getByRole("button", { name: "Open Work Park" }).click();
 await page.waitForURL("**/chats");
-await page.getByText("Hello, Anthony.").waitFor();
+await page.getByRole("heading", { name: "Chats" }).waitFor();
 await page.screenshot({ path: `${dir}/auth-chats.png` });
 
 // Onboarding does not reappear once done.
@@ -56,6 +56,7 @@ await page.goto(base + "/", { waitUntil: "networkidle" });
 check(page.url().endsWith("/chats"), "home did not go straight to chats after onboarding");
 
 // Sign out, wrong password, sign in.
+await page.goto(base + "/settings", { waitUntil: "networkidle" });
 await page.getByRole("button", { name: "Sign out" }).click();
 await page.waitForURL("**/sign-in");
 await page.getByLabel("Email").fill(email);
@@ -65,7 +66,7 @@ await page.getByRole("alert").waitFor();
 await page.getByLabel("Password").fill(password);
 await page.getByRole("button", { name: "Sign in" }).click();
 await page.waitForURL("**/chats");
-await page.getByText("Hello, Anthony.").waitFor();
+await page.getByRole("heading", { name: "Chats" }).waitFor();
 
 await browser.close();
 console.log("auth and onboarding flow ok:", email);

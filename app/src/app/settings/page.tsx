@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 import { Preferences } from "@/components/settings/preferences";
 import { RulesEditor } from "@/components/settings/rules-editor";
 import { Card } from "@/components/ui/card";
@@ -106,6 +107,16 @@ export default async function SettingsPage() {
             edited={rules.edited}
             updatedAt={rules.updatedAt ? rules.updatedAt.toLocaleString("en-US", { timeZone: "UTC" }) : null}
           />
+        </section>
+
+        <section className="flex flex-col gap-3">
+          <h2 className="font-serif text-2xl">Account</h2>
+          <p className="text-sm font-semibold text-ink-soft">
+            Signed in as {session.user.email}.
+          </p>
+          <div>
+            <SignOutButton />
+          </div>
         </section>
       </main>
     </AppShell>

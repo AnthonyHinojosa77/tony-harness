@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { SignOutButton } from "@/components/auth/sign-out-button";
+import { InstallHint } from "@/components/install-hint";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@/components/ui/icons";
 import { BottomNav, SideNav, type NavKey } from "@/components/ui/nav";
@@ -41,6 +42,7 @@ export function AppShell({ active, rail, children }: Props) {
           </Link>
         </header>
         <div className="flex min-h-0 flex-1 flex-col">{children}</div>
+        <InstallHint />
         <div className="md:hidden">
           <BottomNav active={active} />
         </div>

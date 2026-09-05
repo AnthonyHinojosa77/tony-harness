@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Nunito } from "next/font/google";
+import { RegisterServiceWorker } from "@/components/register-sw";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -42,7 +43,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${nunito.variable} ${instrumentSerif.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <RegisterServiceWorker />
+      </body>
     </html>
   );
 }
