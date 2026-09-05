@@ -1,0 +1,88 @@
+import { betterAuth } from "better-auth";
+import { nextCookies } from "better-auth/next-js";
+import { drizzleAdapter } from "@better-auth/drizzle-adapter";
+import { passkey } from "@better-auth/passkey";
+import { importPKCS8, SignJWT } from "jose";
+import { db } from "./db";
+import { configuredProviders } from "./auth-providers";
+
+const baseURL =
+  process.env.BETTER_AUTH_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+const host = new URL(baseURL).hostname;
+
+function secret() {
+  const value = process.env.BETTER_AUTH_SECRET;
+  if (value) return value;
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("BETTER_AUTH_SECRET is not set");
+  }
+  // Development and test only. Sessions signed with this are worthless outside this machine.
+  return "work-park-development-secret-not-for-production";
+}
+
+/** Apple has no fixed client secret; it is a short-lived signed token built from a private key. */
+async function appleClientSecret() {
+  const key = await importPKCS8(
+    process.env.APPLE_PRIVATE_KEY!.replace(/\\n/g, "\n"),
+    "ES256",
+  );
+  return new SignJWT({})
+    .setProtectedHeader({ alg: "ES256", kid: process.env.APPLE_KEY_ID! })
+    .setIssuer(process.env.APPLE_TEAM_ID!)
+    .setSubject(process.env.APPLE_CLIENT_ID!)
+    .setAudience("https://appleid.apple.com")
+    .setIssuedAt()
+    .setExpirationTime("180d")
+    .sign(key);
+}
+
+function socialProviders() {
+  const enabled = configuredProviders();
+  const providers: Record<string, unknown> = {};
+  if (enabled.includes("google")) {
+    providers.google = {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      prompt: "select_account",
+    };
+  }
+  if (enabled.includes("github")) {
+    providers.github = {
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    };
+  }
+  if (enabled.includes("microsoft")) {
+    providers.microsoft = {
+      clientId: process.env.MICROSOFT_CLIENT_ID!,
+      clientSecret: process.env.MICROSOFT_CLIENT_SECRET!,
+      tenantId: "common",
+      prompt: "select_account",
+    };
+  }
+  if (enabled.includes("apple")) {
+    providers.apple = async () => ({
+      clientId: process.env.APPLE_CLIENT_ID!,
+      clientSecret: await appleClientSecret(),
+      appBundleIdentifier: process.env.APPLE_APP_BUNDLE_IDENTIFIER,
+    });
+  }
+  return providers;
+}
+
+export const auth = betterAuth({
+  appName: "Work Park",
+  baseURL,
+  secret: secret(),
+  database: drizzleAdapter(db, { provider: "pg" }),
+  emailAndPassword: { enabled: true, minPasswordLength: 10 },
+  socialProviders: socialProviders(),
+  trustedOrigins: ["https://appleid.apple.com"],
+  plugins: [
+    passkey({ rpID: host, rpName: "Work Park", origin: baseURL }),
+    nextCookies(),
+  ],
+});
+
+export type Session = typeof auth.$Infer.Session;

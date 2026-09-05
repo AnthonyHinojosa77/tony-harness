@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import Home from "./page";
+import { Wordmark } from "./wordmark";
 
-describe("home page", () => {
+describe("Wordmark", () => {
   it("shows the app name", () => {
-    render(<Home />);
+    render(<Wordmark />);
     expect(screen.getByText("Work Park")).toBeDefined();
   });
 });
