@@ -20,7 +20,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` built and verified by Cl
 
 **What you get:** Sign in, pick a model, talk to it, hear it read aloud, see what it cost, and install it on your home screen. This alone replaces the basic chat apps.
 
-- [ ] 1.1 Project skeleton on Vercel. A blank page with the app name loads at a public address. Preview links work on every pull request.
+- [~] 1.1 Project skeleton on Vercel. A blank page with the app name loads at a public address. Preview links work on every pull request. Built and verified locally (lint, types, tests, production build, screenshot). Waiting on Anthony to connect the repository to Vercel before it is live.
 - [ ] 1.2 Design foundation. Colors, type, spacing, buttons, and inputs in the light, rounded, friendly style. A style page shows every element.
 - [ ] 1.3 Accounts. Sign in with Google, Apple, GitHub, Microsoft, passkey, or email and password. Only signed-in users can open the app.
 - [ ] 1.4 Onboarding. First-run flow that sets a starter list of favorite models, list or network navigation, voice preference, and a monthly spending limit. Skippable, re-openable from Settings.
