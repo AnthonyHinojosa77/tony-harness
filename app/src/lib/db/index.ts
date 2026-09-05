@@ -1,7 +1,10 @@
 import { neon } from "@neondatabase/serverless";
 import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
 import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
-import * as schema from "./schema";
+import * as authSchema from "./schema";
+import * as appSchema from "./app-schema";
+
+const schema = { ...authSchema, ...appSchema };
 
 /**
  * One database handle for the whole app.
