@@ -1,6 +1,6 @@
 # Product Specification
 
-Working name: **Reins** (placeholder until Anthony picks a name).
+Product name: **Work Park** (chosen by Anthony on 2026-09-05 after a check of existing uses, domains, and trademarks).
 Repository: `AnthonyHinojosa77/tony-harness`.
 Written 2026-09-05 from a structured interview with Anthony. Every line under **Locked** is something Anthony said. Every line under **Assumed** is a default Claude chose and Anthony has not confirmed.
 
@@ -62,6 +62,12 @@ It fails if it does not cover his high-frequency uses at least as smoothly as th
 - Anthony's operating rules, currently `AGENTS.md` in this repository, are the system prompt on every request. The app stores the live copy, lets him edit it in Settings, and exports it back to the repository so the two never drift.
 - Whatever makes models follow custom instructions best is the deciding factor for how the existing AI Agent System files are used.
 
+### Design direction
+
+- Light, friendly, rounded, consumer-grade, in the family of Airbnb, Duolingo, and Notion.
+- The Work Park name is carried into the interface through subtle motifs, not a literal theme park.
+- The visual network view of projects, conversations, and files should read like a park map: paths between related conversations, clusters as lawns or groves, landmarks for important projects, with the park's shape growing out of how Anthony organizes his work.
+
 ### Voice
 
 - Read-aloud on every response through a play button, plus a hands-free toggle that reads every response automatically.
@@ -75,8 +81,9 @@ It fails if it does not cover his high-frequency uses at least as smoothly as th
 
 ### How we work
 
-- Claude builds in this repository and opens pull requests. Anthony reviews by opening a live preview on his phone or laptop, not by reading code, and merges when it looks right.
-- Every pull request description says what to try in the preview and what should happen.
+- Claude builds in this repository, verifies each piece itself, and merges its own pull requests. Anthony does not review features one at a time; a feature-by-feature check cannot show whether the app is worth adopting.
+- Anthony reviews design only during the build, at a few defined check-ins, reacting to how things look and feel.
+- Anthony evaluates the finished product once, as a whole, by using it in place of ChatGPT and Claude, and reports what would stop him from adopting it.
 - All communication with Anthony is plain, clear, and non-technical. Claude automates as much as possible and never asks Anthony to perform multi-step technical procedures.
 
 ## Assumed
@@ -91,7 +98,6 @@ These are Claude's defaults. Any of them can be overturned by saying so.
 - The visual network view renders on phones but is expected to be used mostly on the laptop.
 - The developer portal's phone version is review-and-approve only. Hand-editing code on a phone is not built.
 - Speechify's free developer tier (50,000 characters per month at the time of writing) is enough to start. Anthony's consumer Speechify subscription does not cover API use.
-- The name "Reins" is a placeholder. Trademark and domain availability are unchecked for every candidate.
 
 ## Out of scope for the first release
 
@@ -104,7 +110,7 @@ These are Claude's defaults. Any of them can be overturned by saying so.
 
 ## Still open
 
-- The product name. Candidates from Anthony: T-Harness, Workspree, WorkMosh, Orgo, WorkBoard, Space Work, Space Board, Production Space, major, League, mojo, mojoflo. Candidates from Claude: Reins, Parley, Council. WorkBoard is an existing company. None are checked for trademark or domain.
+- Domain purchase. On 2026-09-05, workpark.ai and workpark.so were unregistered and workpark.com was registered with no site, expiring 2026-10-06. A lapsed small-business tool named Workpark and a live Turkish attendance app named WorkPark exist; the only trademark filing on the name was abandoned in 2019. A formal trademark clearance has not been done.
 
 ## Technical decisions
 
