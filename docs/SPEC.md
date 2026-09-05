@@ -67,6 +67,9 @@ It fails if it does not cover his high-frequency uses at least as smoothly as th
 - Light, friendly, rounded, consumer-grade, in the family of Airbnb, Duolingo, and Notion.
 - The Work Park name is carried into the interface through subtle motifs, not a literal theme park.
 - The visual network view of projects, conversations, and files should read like a park map: paths between related conversations, clusters as lawns or groves, landmarks for important projects, with the park's shape growing out of how Anthony organizes his work.
+- Chosen style (2026-09-05, after three rounds of options): "Paper stamp". Cream paper background, Nunito for interface text, Instrument Serif for the wordmark and headlines. Grass-green pressed buttons with a darker bottom edge. Sunny yellow for the capability chip and the judge note. Dark green ink outline with an offset solid shadow used only for emphasis: the answer card, the composer, the wordmark badge, the active navigation item, and the selected item on the park map. Everything else uses soft tan borders.
+- Park map vocabulary: lawns are projects (grass texture, soft green edge, ink outline when selected); trees are conversations (three-lobed canopies that grow with the conversation); cream path ribbons link related conversations; pavilions are files; a pond is the archive; grey saplings at the edge are unsorted chats; a signboard key, compass, and zoom controls frame the map; selecting a tree opens a card with Open and Move to lawn.
+- The design canvas with every round and the final screens: https://claude.ai/code/artifact/40322a13-0bb7-4fdf-9c6b-19477a0d3647
 
 ### Voice
 

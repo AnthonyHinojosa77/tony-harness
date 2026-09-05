@@ -30,7 +30,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` built and verified by Cl
 - [ ] 1.8 Read-aloud. Play button on every response and a hands-free toggle that reads each response automatically. Speechify voice with the device voice as fallback.
 - [ ] 1.9 Home-screen install. Works as an installed app on iPhone and Android with an icon and splash screen.
 
-**Design check-in 1 (after 1.2):** Anthony reacts to the visual direction: palette, type, shapes, the chat screen, and the first sketch of the park map.
+**Design check-in 1 (done 2026-09-05):** Anthony chose the "Paper stamp" direction from three rounds of options. Phone chat, laptop chat, and the park map exist as mockups in that style.
 
 **Design check-in 2 (after 1.9):** Anthony reacts to the full chat experience on his phone: onboarding, chat, Settings, read-aloud controls, installed-app icon and splash.
 
@@ -104,6 +104,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` built and verified by Cl
 
 Recorded here when Anthony makes them, so no one has to search the conversation.
 
+- Design direction: "Paper stamp" (option G), chosen 2026-09-05 after three rounds. Details in the Design direction section of SPEC.md. Design check-in 1 is complete.
 - Product name: Work Park (chosen 2026-09-05). workpark.ai and workpark.so were unregistered on that date; workpark.com expires 2026-10-06 with no site on it.
 - Custom domain: Anthony to register workpark.ai and workpark.so, and try for workpark.com after it expires. Claude will give the exact steps when he is ready.
 
