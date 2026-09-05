@@ -25,8 +25,8 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` built and verified by Cl
 - [~] 1.3 Accounts. Sign in with Google, Apple, GitHub, Microsoft, passkey, or email and password. Only signed-in users can open the app. Built: email and password, passkeys, sign-out, protected pages, and the four social buttons, which appear automatically once each provider's credentials are added. Waiting on Anthony for Google, Apple, GitHub, and Microsoft credentials.
 - [x] 1.4 Onboarding. First-run flow that sets a starter list of favorite models, list or network navigation, voice preference, and a monthly spending limit. Skippable, re-openable from Settings. (Re-opening from Settings lands with step 1.7.)
 - [~] 1.5 Chat through OpenRouter. Send a message, choose a model from favorites, watch the answer stream in. Conversations save and appear on every device. Built and verified against a local stand-in for OpenRouter; the real connection needs Anthony's OpenRouter key.
-- [ ] 1.6 Rules as system prompt. `AGENTS.md` is imported as the live rules, editable in Settings, applied to every request, and exportable back to the repository.
-- [ ] 1.7 Cost tracking in Settings. Per-message cost recorded, totals by day and model, alert when the monthly limit is near.
+- [x] 1.6 Rules as system prompt. `AGENTS.md` is imported as the live rules, editable in Settings, applied to every request, and exportable back to the repository. (Export is a download for now; automatic sync to GitHub comes with the GitHub connection in 4.5.)
+- [x] 1.7 Cost tracking in Settings. Per-message cost recorded, totals by day and model, alert when the monthly limit is near.
 - [ ] 1.8 Read-aloud. Play button on every response and a hands-free toggle that reads each response automatically. Speechify voice with the device voice as fallback.
 - [ ] 1.9 Home-screen install. Works as an installed app on iPhone and Android with an icon and splash screen.
 

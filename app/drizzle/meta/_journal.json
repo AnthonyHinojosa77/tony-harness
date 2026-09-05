@@ -22,6 +22,13 @@
       "when": 1788577397999,
       "tag": "0002_conversations",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788577714431,
+      "tag": "0003_rules",
+      "breakpoints": true
     }
   ]
 }

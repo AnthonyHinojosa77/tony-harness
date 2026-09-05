@@ -9,6 +9,7 @@ import { z } from "zod";
 import { buildInstructions } from "@/lib/chat/instructions";
 import { getLanguageModel, ModelsUnavailableError } from "@/lib/chat/model";
 import { saveMessage, textOf, titleFromText, touchConversation } from "@/lib/chat/store";
+import { getRules } from "@/lib/rules";
 import { getSession } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
 
@@ -54,9 +55,10 @@ export async function POST(req: Request) {
   await saveMessage({ id: last.id, conversationId, role: "user", parts: last.parts });
 
   const assistantId = crypto.randomUUID();
+  const { content: rulesText } = await getRules(session.user.id);
   const result = streamText({
     model,
-    instructions: buildInstructions(session.user.name),
+    instructions: buildInstructions(session.user.name, rulesText),
     messages: await convertToModelMessages(messages),
     onEnd: async ({ text, usage, finalStep }) => {
       const openrouter = finalStep?.providerMetadata?.openrouter as
