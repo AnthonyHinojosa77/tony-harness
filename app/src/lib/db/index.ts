@@ -19,7 +19,8 @@ function createDb() {
   if (url) {
     return drizzleNeon({ client: neon(url), schema });
   }
-  const dir = process.env.PGLITE_DIR ?? "./.pglite";
+  // On Vercel only /tmp is writable, and it is wiped when the server restarts.
+  const dir = process.env.PGLITE_DIR ?? (process.env.VERCEL ? "/tmp/work-park-pglite" : "./.pglite");
   if (dir === "memory") {
     return drizzlePglite({ schema });
   }

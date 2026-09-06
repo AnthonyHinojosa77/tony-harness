@@ -1,11 +1,9 @@
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import type { Db } from "./index";
 
-const migrationsFolder = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "../../../drizzle",
-);
+// Resolved from the working directory so the same path works from source,
+// from the built server, and inside a Vercel function.
+const migrationsFolder = path.join(process.cwd(), "drizzle");
 
 /**
  * Brings the connected database up to date with the SQL files in ./drizzle.
