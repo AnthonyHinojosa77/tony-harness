@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
@@ -15,7 +16,10 @@ function secret() {
   const value = process.env.BETTER_AUTH_SECRET;
   if (value) return value;
   if (process.env.NODE_ENV === "production") {
-    throw new Error("BETTER_AUTH_SECRET is not set");
+    // Preview mode: a fresh random secret per server start. Nobody can forge a
+    // session, but every restart signs everyone out. See src/lib/preview.ts.
+    console.warn("[auth] BETTER_AUTH_SECRET is not set; using a temporary secret for this preview.");
+    return randomBytes(32).toString("hex");
   }
   // Development and test only. Sessions signed with this are worthless outside this machine.
   return "work-park-development-secret-not-for-production";

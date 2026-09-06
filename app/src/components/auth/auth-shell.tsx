@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Wordmark } from "@/components/wordmark";
+import { isPreview } from "@/lib/preview";
 
 type Props = {
   title: string;
@@ -13,6 +14,11 @@ export function AuthShell({ title, footer, children }: Props) {
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-6 px-5 py-12">
       <Wordmark size="md" />
+      {isPreview() && (
+        <p className="max-w-sm rounded-chip border-2 border-tan bg-sun/40 px-3 py-2 text-center text-xs font-bold">
+          Preview: accounts and chats last until the server restarts.
+        </p>
+      )}
       <Card variant="stamp" className="flex w-full max-w-sm flex-col gap-5 p-6">
         <h1 className="font-serif text-3xl">{title}</h1>
         {children}
