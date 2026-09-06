@@ -20,7 +20,7 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` built and verified by Cl
 
 **What you get:** Sign in, pick a model, talk to it, hear it read aloud, see what it cost, and install it on your home screen. This alone replaces the basic chat apps.
 
-- [~] 1.1 Project skeleton on Vercel. A blank page with the app name loads at a public address. Preview links work on every pull request. Built and verified locally (lint, types, tests, production build, screenshot). Waiting on Anthony to connect the repository to Vercel before it is live.
+- [x] 1.1 Project skeleton on Vercel. Live at https://work-park.vercel.app, deploying automatically from every merge. Runs in preview mode (accounts and chats reset when the server restarts) until the permanent database and sign-in secret are added, which needs a Vercel token from Anthony.
 - [x] 1.2 Design foundation. Colors, type, spacing, buttons, and inputs in the light, rounded, friendly style. A style page shows every element. Live at `/style` once the app is deployed.
 - [~] 1.3 Accounts. Sign in with Google, Apple, GitHub, Microsoft, passkey, or email and password. Only signed-in users can open the app. Built: email and password, passkeys, sign-out, protected pages, and the four social buttons, which appear automatically once each provider's credentials are added. Waiting on Anthony for Google, Apple, GitHub, and Microsoft credentials.
 - [x] 1.4 Onboarding. First-run flow that sets a starter list of favorite models, list or network navigation, voice preference, and a monthly spending limit. Skippable, re-openable from Settings. (Re-opening from Settings lands with step 1.7.)
